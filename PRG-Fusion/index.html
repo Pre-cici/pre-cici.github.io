@@ -1,0 +1,107 @@
+<!doctype html>
+<!--
+ SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ SPDX-License-Identifier: Apache-2.0
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PRG-Fusion: Orchestrating Generative Priors with Reconstruction Evidence for Driving View Synthesis. Method overview and novel-trajectory video demonstrations.">
+  <meta name="theme-color" content="#f7f8fa">
+  <title>PRG-Fusion · Driving View Synthesis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20261027-sync-transport">
+  <script defer src="scene-controls.js?v=2"></script>
+  <script defer src="demos.js?v=9"></script>
+  <script defer src="data.js?v=4"></script>
+  <script defer src="comparisons.js?v=10"></script>
+</head>
+<body>
+  <header class="hero">
+    <img class="hero-logo" src="media/teaser.png" alt="PRG-Fusion teaser" />
+    <h1><span>PRG-Fusion: Orchestrating Generative Priors</span><span>with Reconstruction Evidence for Driving View Synthesis</span></h1>
+    <p class="authors">Sipeng He<sup>1</sup>, Jialei Chen<sup>2</sup>, Zhen Fang<sup>1</sup>, Dongchun Ren<sup>2</sup>, Feng Zhao<sup>1</sup></p>
+    <p class="affiliations"><sup>1</sup>University of Science and Technology of China &nbsp; <sup>2</sup><a href="https://yootta.com/">Yootta</a></p>
+    <div class="links">
+      <a href="https://arxiv.org/abs/2609.06948"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg><strong>Paper</strong></a>
+      <a href="https://github.com/Pre-cici/cosmos"><svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" stroke="none" d="M12 .297C5.37.297 0 5.67 0 12.297c0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.043-1.61-4.043-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.084 1.838 1.237 1.838 1.237 1.07 1.835 2.807 1.305 3.492.998.108-.776.418-1.305.762-1.605-2.665-.3-5.467-1.334-5.467-5.93 0-1.31.467-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.5 11.5 0 0 1 3-.404c1.02.005 2.045.138 3 .404 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg><strong>Code</strong></a>
+      <a href="https://huggingface.co/Post-pone/PRG-Fusion"><img class="link-icon" src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="" width="18" height="18"><strong>Model</strong></a>
+    </div>
+  </header>
+  <main>
+    <section id="abstract" class="section wide abstract">
+      <div class="section-title"><h2>Abstract</h2></div>
+      <p class="abstract-text">Synthesizing photorealistic driving videos along specified trajectories is essential for scalable closed-loop simulation. Reconstruction-based methods leverage neural rendering to synthesize geometrically consistent views, but often exhibit diverse artifacts and missing content when the viewpoint deviates from the training trajectory. In contrast, generative models can synthesize realistic views along arbitrary trajectories from vehicle sensor data, yet often struggle to maintain temporal and geometric consistency across frames. To combine the strengths of both, we propose <strong>PRG-Fusion</strong>, a framework for driving view synthesis that uses reconstruction evidence to orchestrate generative priors across regions. Specifically, we extract region-wise degradation evidence from reconstructed driving scenes and convert it into Preserve, Repair, and Generate (PRG) labels. At inference, these labels serve as a unified routing policy for region-aware spatiotemporal synthesis, orchestrating 3DGS appearance preservation, LiDAR-guided structural correction, and video-prior-driven content completion across Preserve, Repair, and Generate regions, respectively. We follow a two-stage training paradigm, first establishing geometric control from sparse LiDAR projections and subsequently learning appearance control from dense 3DGS renderings. Extensive experiments on Waymo demonstrate that PRG-Fusion achieves state-of-the-art overall performance in novel trajectory video synthesis, with superior visual quality and geometric fidelity while maintaining competitive view consistency under large trajectory shifts.</p>
+      <figure class="motivation">
+        <a class="figure-zoom" href="media/motivation.png?v=4" target="_blank" rel="noopener"><img src="media/motivation.png?v=4" alt="Motivation for PRG-Fusion: region-aware fusion of dense 3DGS renderings and sparse LiDAR projections for novel-trajectory driving video synthesis" width="5449" height="2718" /></a>
+        <figcaption><strong>Motivation.</strong> Dense 3DGS renderings preserve appearance but contain degraded and missing regions. PRG labels identify where reconstruction evidence should be preserved, repaired with LiDAR geometry, or completed by the generative prior.</figcaption>
+      </figure>
+    </section>
+    <section id="method" class="section">
+      <div class="section-title"><h2>Method</h2></div>
+      <figure class="pipeline">
+        <a class="figure-zoom" href="media/pipeline.png?v=5" target="_blank" rel="noopener"><img src="media/pipeline.png?v=5" alt="PRG-Fusion architecture combining geometry and appearance branches through region-wise PRG routing" loading="lazy" width="6807" height="3242"></a>
+        <figcaption><strong>Overview of PRG-Fusion.</strong> Given a recorded driving log, we reconstruct a 3DGS scene and colorize the aggregated LiDAR sweeps. Along a target trajectory, dense 3DGS renderings and sparse LiDAR projections provide aligned appearance and geometry conditions. Reconstruction reliability and support determine pixel-wise Preserve, Repair, and Generate labels. Two separate control branches encode the conditions, and PRG labels route their residuals into a frozen video DiT to synthesize the novel-trajectory video.</figcaption>
+      </figure>
+      <div class="method-description">
+        <p><strong>Reconstruction evidence and regional routing.</strong> We combine trajectory-dependent unreliability with observation and geometric support to distinguish reliable reconstruction, degraded structure, and missing content. The resulting PRG labels modulate the appearance and geometry branches spatially: Preserve regions retain reliable 3DGS appearance, Repair regions emphasize LiDAR-guided structural correction, and Generate regions rely on the video prior for content completion.</p>
+        <p><strong>Geometry-first, appearance-second training.</strong> We first establish geometric control using sparse colored LiDAR projections, then learn appearance control from dense 3DGS renderings. At inference, PRG-guided fusion balances the two control signals according to local reconstruction quality.</p>
+      </div>
+    </section>
+    <section id="demos" class="section wide">
+      <div class="section-title"><h2>Demos</h2></div>
+      <p class="section-intro">The following examples demonstrate our method’s ability to generalize across diverse novel trajectories, including lateral shifts, lane changes, and S-shaped sweeps.</p>
+      <div class="demo-group" aria-labelledby="shift-title">
+        <h3 class="demo-group-title" id="shift-title">Lateral Trajectory Shifts</h3>
+        <div class="demo-block"><h4 class="demo-title">Scene 002 <span class="shift-offset">@ Left 3 m</span></h4><div class="demo-head cols4"><div class="source-label">Source Trajectory Video</div><div>3DGS Rendering (Condition)</div><div>LiDAR Projection (Condition)</div><div class="ours-label">PRG-Fusion (Ours)</div></div><div class="demo-row cols4"><div class="demo-col source"><video muted playsinline preload="metadata" src="media/videos/demos__scene002_left3m_source.mp4"></video></div><div class="demo-col "><video muted playsinline preload="metadata" src="media/videos/demos__scene002_left3m_condition_3dgs.mp4"></video></div><div class="demo-col "><video muted playsinline preload="metadata" src="media/videos/demos__scene002_left3m_condition_lidar.mp4"></video></div><div class="demo-col ours"><video muted playsinline preload="metadata" src="media/videos/demos__scene002_left3m_generation.mp4"></video></div></div><hr class="demo-sep"></div>
+        <div class="demo-block"><h4 class="demo-title">Scene 003 <span class="shift-offset">@ Right 2 m</span></h4><div class="demo-head cols4"><div class="source-label">Source Trajectory Video</div><div>3DGS Rendering (Condition)</div><div>LiDAR Projection (Condition)</div><div class="ours-label">PRG-Fusion (Ours)</div></div><div class="demo-row cols4"><div class="demo-col source"><video muted playsinline preload="metadata" src="media/videos/demos__scene003_right2m_source.mp4"></video></div><div class="demo-col "><video muted playsinline preload="metadata" src="media/videos/demos__scene003_right2m_condition_3dgs.mp4"></video></div><div class="demo-col "><video muted playsinline preload="metadata" src="media/videos/demos__scene003_right2m_condition_lidar.mp4"></video></div><div class="demo-col ours"><video muted playsinline preload="metadata" src="media/videos/demos__scene003_right2m_generation.mp4"></video></div></div><hr class="demo-sep"></div>
+      </div>
+      <div class="demo-group" aria-labelledby="lane-change-title">
+        <h3 class="demo-group-title" id="lane-change-title">Lane-change Trajectories</h3>
+        <div class="demo-block"><h4 class="demo-title">Scene 022 · Lane change, left 3 m</h4><div class="demo-head"><div>3DGS Rendering (Condition)</div><div>LiDAR Projection (Condition)</div><div class="ours-label">PRG-Fusion (Ours)</div></div><div class="demo-row"><div class="demo-col "><video muted playsinline preload="metadata" src="media/videos/demos__scene022_lane_change_left3m_condition_3dgs.mp4"></video></div><div class="demo-col "><video muted playsinline preload="metadata" src="media/videos/demos__scene022_lane_change_left3m_condition_lidar.mp4"></video></div><div class="demo-col ours"><video muted playsinline preload="metadata" src="media/videos/demos__scene022_lane_change_left3m_generation.mp4"></video></div></div><hr class="demo-sep"></div>
+        <div class="demo-block"><h4 class="demo-title">Scene 053 · Lane change, left 3 m</h4><div class="demo-head"><div>3DGS Rendering (Condition)</div><div>LiDAR Projection (Condition)</div><div class="ours-label">PRG-Fusion (Ours)</div></div><div class="demo-row"><div class="demo-col "><video muted playsinline preload="metadata" src="media/videos/demos__scene053_lane_change_left3m_condition_3dgs.mp4"></video></div><div class="demo-col "><video muted playsinline preload="metadata" src="media/videos/demos__scene053_lane_change_left3m_condition_lidar.mp4"></video></div><div class="demo-col ours"><video muted playsinline preload="metadata" src="media/videos/demos__scene053_lane_change_left3m_generation.mp4"></video></div></div><hr class="demo-sep"></div>
+      </div>
+      <div class="demo-group" aria-labelledby="s-sweep-title">
+        <h3 class="demo-group-title" id="s-sweep-title">S-shaped Trajectories</h3>
+        <div class="demo-block"><h4 class="demo-title">Scene 028 · Right S-sweep, first 3 m</h4><div class="demo-head"><div>3DGS Rendering (Condition)</div><div>LiDAR Projection (Condition)</div><div class="ours-label">PRG-Fusion (Ours)</div></div><div class="demo-row"><div class="demo-col "><video muted playsinline preload="metadata" src="media/videos/demos__scene028_s_lane_sweep_right_first3m_condition_3dgs.mp4"></video></div><div class="demo-col "><video muted playsinline preload="metadata" src="media/videos/demos__scene028_s_lane_sweep_right_first3m_condition_lidar.mp4"></video></div><div class="demo-col ours"><video muted playsinline preload="metadata" src="media/videos/demos__scene028_s_lane_sweep_right_first3m_generation.mp4"></video></div></div><hr class="demo-sep"></div>
+        <div class="demo-block"><h4 class="demo-title">Scene 034 · Left S-sweep, first 3 m</h4><div class="demo-head"><div>3DGS Rendering (Condition)</div><div>LiDAR Projection (Condition)</div><div class="ours-label">PRG-Fusion (Ours)</div></div><div class="demo-row"><div class="demo-col "><video muted playsinline preload="metadata" src="media/videos/demos__scene034_s_lane_sweep_left_first3m_condition_3dgs.mp4"></video></div><div class="demo-col "><video muted playsinline preload="metadata" src="media/videos/demos__scene034_s_lane_sweep_left_first3m_condition_lidar.mp4"></video></div><div class="demo-col ours"><video muted playsinline preload="metadata" src="media/videos/demos__scene034_s_lane_sweep_left_first3m_generation.mp4"></video></div></div><hr class="demo-sep"></div>
+      </div>
+    </section>
+    <section id="comparisons" class="section wide">
+      <div class="section-title"><h2>Comparisons</h2></div>
+      <div id="comparison-groups"></div>
+    </section>
+    <section id="citation" class="section citation">
+      <div class="section-title"><h2>Citation</h2></div>
+      <pre><code>@misc{he2026prgfusion,
+  title = {PRG-Fusion: Orchestrating Generative Priors with
+           Reconstruction Evidence for Driving View Synthesis},
+  author = {Sipeng He and Jialei Chen and Zhen Fang and
+            Dongchun Ren and Feng Zhao},
+  year = {2026},
+  eprint = {2609.06948},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CV},
+  url = {https://arxiv.org/abs/2609.06948}
+}</code></pre>
+    </section>
+  </main>
+  <footer>Built on NVIDIA Cosmos · PRG-Fusion<br><span>We thank the baseline authors for their research and visualization resources.</span></footer>
+</body>
+</html>

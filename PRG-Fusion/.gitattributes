@@ -1,0 +1,2 @@
+# Media stay plain Git files so GitHub Pages serves them directly.
+media/** -filter -diff -merge -text
